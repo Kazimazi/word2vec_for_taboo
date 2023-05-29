@@ -1,8 +1,12 @@
 import gensim
 import json
 import random
+import gensim.downloader
 
+# Download from https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing
 google_news_model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True, limit=200000)
+glove_model = gensim.downloader.load('glove-twitter-25')
+
 def load_taboos():
     with open('./data/en/animals.json', 'r') as animal_file:
         # Exclude taboos that have space in it.
@@ -30,14 +34,20 @@ keyword = str.lower(keyword)
 print(f"Keyword is '{keyword}' and other taboos are {other_taboos}.")
 taboos = other_taboos + [keyword]
 
-def print_similarities(model, keyword, taboos):
-    counter = 1
+def get_similarities(model, keyword, taboos):
+    results = []
     for (clue, simularity) in model.most_similar(keyword, topn=15):
         clue = str.lower(clue)
         if is_valid(taboos, clue):
-            if counter == 1:
-                print("Top matches:")
-            print(f"{counter}.\t{simularity:.2f}\t{clue}")
-            counter += 1
+            results.append((clue, simularity))
+    return results
 
-print_similarities(google_news_model, keyword, taboos)
+def print_results(results):
+    for (clue, similarity) in results:
+        print(f"{similarity:.2f}\t{clue}")
+
+
+print("Matches for google news")
+print_results(get_similarities(google_news_model, keyword, taboos))
+print("Matches for glove twitter")
+print_results(get_similarities(glove_model, keyword, taboos))
