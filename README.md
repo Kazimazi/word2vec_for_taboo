@@ -14,14 +14,13 @@ Python 3.10-et használtam Gensim libray-vel.
 
 Sok GB szabad helyre lehet szükség a modellekhez.
 
-A logika nem tökéletes, néha megszegi a szabályt, pl ha a kitalálandó szó _wolf_ akkor megoldásban benne lesz a _wolves_.
-
 Futtatni:
 ```
 python taboo.py
 ```
 
 Nem mindegyik inputra lesz találat a model-ünkben, akkor hibát kapunk.
+A logika sem tökéletes, néha megszegi a szabályt, pl ha a kitalálandó szó _wolf_ akkor megoldásban benne lesz a _wolves_ és többeszámát nem használhatjuk a kitalálandó szónak.
 
 ## Megfigyelések
 
